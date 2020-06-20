@@ -111,3 +111,11 @@
 .rotation-paused {
   animation-play-state: paused;
 }
+
+.pregress-bar {
+  position: absolute;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24%;
+}
