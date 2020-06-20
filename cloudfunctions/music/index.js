@@ -9,7 +9,7 @@ cloud.init()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const { start, count, playlistId } = event
+  const { start, count, playlistId, musicId } = event
 
   const app = new TcbRouter({ event })
 
@@ -25,8 +25,14 @@ exports.main = async (event, context) => {
     next()
   })
 
-  app.use('musiclist', async (ctx, next) => {
+  app.router('musiclist', async (ctx, next) => {
     const res = await rp(`${BASE_URL}/playlist/detail?id=${playlistId}`)
+    ctx.body = JSON.parse(res)
+    next()
+  })
+
+  app.router('musicUrl', async (ctx, next) => {
+    const res = await rp(`${BASE_URL}/song/url?id=${musicId}`)
     ctx.body = JSON.parse(res)
     next()
   })
