@@ -4,6 +4,9 @@ let movableViewWidth = 0
 let currentSec = '0'
 let duration = 0
 
+// 进度条是否在拖拽
+let isMoving = false
+
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 
 Component({
@@ -28,6 +31,7 @@ Component({
         this.data.progress =
           (event.detail.x / (movableAreaWidth - movableViewWidth)) * 100
         this.data.movableDistance = event.detail.x
+        isMoving = true
       }
     },
     onTouchEnd() {
@@ -40,6 +44,7 @@ Component({
         ['showTime.currentTime']: `${formattedCurrentTime.min}:${formattedCurrentTime.sec}`,
       })
       backgroundAudioManager.seek((duration * this.data.progress) / 100)
+      isMoving = false
     },
     _getMovableDistance() {
       const query = this.createSelectorQuery()
@@ -51,7 +56,9 @@ Component({
       })
     },
     _bindBGMEvent() {
-      backgroundAudioManager.onPlay(() => {})
+      backgroundAudioManager.onPlay(() => {
+        isMoving = false
+      })
 
       backgroundAudioManager.onStop(() => {})
 
@@ -70,22 +77,27 @@ Component({
       })
 
       backgroundAudioManager.onTimeUpdate(() => {
-        const currentTime = backgroundAudioManager.currentTime
-        const duration = backgroundAudioManager.duration
-        const sec = currentTime.toString().split('.')[0]
-        if (sec !== currentSec) {
-          const formattedCurrentTime = this._dateFormat(currentTime)
-          this.setData({
-            movableDistance:
-              ((movableAreaWidth - movableViewWidth) * currentTime) / duration,
-            progress: (currentTime / duration) * 100,
-            ['showTime.currentTime']: `${formattedCurrentTime.min}:${formattedCurrentTime.sec}`,
-          })
-          currentSec = sec
+        if (!isMoving) {
+          const currentTime = backgroundAudioManager.currentTime
+          const duration = backgroundAudioManager.duration
+          const sec = currentTime.toString().split('.')[0]
+          if (sec !== currentSec) {
+            const formattedCurrentTime = this._dateFormat(currentTime)
+            this.setData({
+              movableDistance:
+                ((movableAreaWidth - movableViewWidth) * currentTime) /
+                duration,
+              progress: (currentTime / duration) * 100,
+              ['showTime.currentTime']: `${formattedCurrentTime.min}:${formattedCurrentTime.sec}`,
+            })
+            currentSec = sec
+          }
         }
       })
 
-      backgroundAudioManager.onEnded(() => {})
+      backgroundAudioManager.onEnded(() => {
+        this.triggerEvent('musicEnd')
+      })
 
       backgroundAudioManager.onError(res => {
         wx.showToast({
