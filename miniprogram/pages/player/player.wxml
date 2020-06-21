@@ -2,13 +2,15 @@
 <view class="player-mask"></view>
 
 <view class="player-info">
-	<view class="player-disc {{isPlaying ? 'play' : ''}}">
+	<view class="player-disc {{isPlaying ? 'play' : ''}}" bindtap="onChangeLyricShow" hidden="{{isLyricShow}}">
 		<image class="player-image rotation {{isPlaying ? '' : 'rotation-paused'}}" src="{{picUrl}}"></image>
 	</view>
 
-<view class="pregress-bar">
-<x-pregress-bar bind:musicEnd="onNext"></x-pregress-bar>
-</view>
+	<x-lyric class="lyric" isLyricShow="{{!isLyricShow}}" bindtap="onChangeLyricShow" lyric="{{lyric}}"></x-lyric>
+
+	<view class="pregress-bar">
+		<x-progress-bar bind:musicEnd="onNext" bind:timeUpdate="timeUpdate" bind:musicPlay="onPlay" bind:musicPause="onPause" isSame="{{isSame}}"></x-progress-bar>
+	</view>
 
 	<view class="control">
 		<text class="iconfont icon-last" bindtap="onPrev"></text>

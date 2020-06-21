@@ -3,6 +3,7 @@ let musiclist = []
 let playingIndex = 0
 
 const backgroundAudioManager = wx.getBackgroundAudioManager()
+const app = getApp()
 
 Page({
   /**
@@ -11,6 +12,9 @@ Page({
   data: {
     picUrl: '',
     isPlaying: false,
+    isLyricShow: false,
+    lyric: '暂无歌词',
+    isSame: false,
   },
 
   /**
@@ -23,14 +27,29 @@ Page({
     await this._loadMusicDetail(musicId)
   },
   async _loadMusicDetail(musicId) {
+    if (Number(musicId) === app.getPlayingMusicId()) {
+      this.setData({
+        isSame: true,
+      })
+    } else {
+      this.setData({
+        isSame: false,
+      })
+    }
+    if (!this.data.isSame) {
+      backgroundAudioManager.stop()
+    }
+
     const music = musiclist[playingIndex]
-    backgroundAudioManager.pause()
+
     wx.setNavigationBarTitle({
       title: music.name,
     })
     this.setData({
       picUrl: music.al.picUrl,
     })
+
+    app.setPlayingMusicId(musicId)
 
     wx.showLoading({
       title: '加载中...',
@@ -43,11 +62,21 @@ Page({
         musicId,
       },
     })
-    backgroundAudioManager.src = res.result.data[0].url
-    backgroundAudioManager.title = music.name
-    backgroundAudioManager.coverImgUrl = music.al.picUrl
-    backgroundAudioManager.singer = music.ar[0].name
-    backgroundAudioManager.epname = music.al.name
+
+    if (!res.result.data[0].url) {
+      wx.showToast({
+        title: '无法播放',
+      })
+      return
+    }
+
+    if (!this.data.isSame) {
+      backgroundAudioManager.src = res.result.data[0].url
+      backgroundAudioManager.title = music.name
+      backgroundAudioManager.coverImgUrl = music.al.picUrl
+      backgroundAudioManager.singer = music.ar[0].name
+      backgroundAudioManager.epname = music.al.name
+    }
 
     this.setData({
       isPlaying: true,
@@ -55,6 +84,17 @@ Page({
 
     wx.hideLoading({
       complete: res => {},
+    })
+
+    const lyricRes = await wx.cloud.callFunction({
+      name: 'music',
+      data: {
+        $url: 'lyric',
+        musicId,
+      },
+    })
+    this.setData({
+      lyric: lyricRes.result.lrc.lyric,
     })
   },
   togglePlaying() {
@@ -81,5 +121,23 @@ Page({
       playingIndex = 0
     }
     this._loadMusicDetail(musiclist[playingIndex].id)
+  },
+  onChangeLyricShow() {
+    this.setData({
+      isLyricShow: !this.data.isLyricShow,
+    })
+  },
+  timeUpdate(event) {
+    this.selectComponent('.lyric').update(event.detail.currentTime)
+  },
+  onPlay() {
+    this.setData({
+      isPlaying: true,
+    })
+  },
+  onPause() {
+    this.setData({
+      isPlaying: false,
+    })
   },
 })

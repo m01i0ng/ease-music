@@ -10,7 +10,12 @@ let isMoving = false
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 
 Component({
-  properties: {},
+  properties: {
+    isSame: {
+      type: Boolean,
+    },
+  },
+
   data: {
     showTime: {
       currentTime: '00:00',
@@ -19,12 +24,17 @@ Component({
     movableDistance: 0,
     progress: 0,
   },
+
   lifetimes: {
     ready() {
+      if (this.properties.isSame && this.data.showTime.totalTime === '00:00') {
+        this._setTime()
+      }
       this._getMovableDistance()
       this._bindBGMEvent()
     },
   },
+
   methods: {
     onChange(event) {
       if (event.detail.source === 'touch') {
@@ -58,11 +68,14 @@ Component({
     _bindBGMEvent() {
       backgroundAudioManager.onPlay(() => {
         isMoving = false
+        this.triggerEvent('musicPlay')
       })
 
       backgroundAudioManager.onStop(() => {})
 
-      backgroundAudioManager.onPause(() => {})
+      backgroundAudioManager.onPause(() => {
+        this.triggerEvent('musicPause')
+      })
 
       backgroundAudioManager.onWaiting(() => {})
 
@@ -91,6 +104,10 @@ Component({
               ['showTime.currentTime']: `${formattedCurrentTime.min}:${formattedCurrentTime.sec}`,
             })
             currentSec = sec
+            // 歌词联动
+            this.triggerEvent('timeUpdate', {
+              currentTime,
+            })
           }
         }
       })
