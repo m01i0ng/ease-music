@@ -7,4 +7,11 @@
 			<x-search iconfont="iconfont" icon-search="icon-search"></x-search>
 		</view>
 	</view>
+  <x-bottom-modal modalShow="{{modalShow}}">
+    <view>
+      <view>
+      
+      </view>
+    </view>
+  </x-bottom-modal>
 </view>
