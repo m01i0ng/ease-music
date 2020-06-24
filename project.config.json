@@ -72,6 +72,13 @@
 					"pathName": "pages/player/player",
 					"query": "musicId=1442614805&index=1",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/blog/blog",
+					"pathName": "pages/blog/blog",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

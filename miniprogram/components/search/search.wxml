@@ -1,0 +1,5 @@
+<view class="container">
+	<i class="iconfont icon-search search-icon"></i>
+	<input class="bar" type="text" placeholder="{{placeholder}}" placeholder-class="in-bar" />
+	<button class="search">搜索</button>
+</view>

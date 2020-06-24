@@ -1,2 +1,10 @@
-<!--miniprogram/pages/blog/blog.wxml-->
-<text>miniprogram/pages/blog/blog.wxml</text>
+<view class="container">
+	<view class="header">
+		<view class="publish-container" bindtap="onPublish">
+			<i class="iconfont icon-publish"></i>
+		</view>
+		<view class="search-container">
+			<x-search iconfont="iconfont" icon-search="icon-search"></x-search>
+		</view>
+	</view>
+</view>
