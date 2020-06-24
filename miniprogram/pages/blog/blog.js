@@ -47,9 +47,37 @@ Page({
    */
   onShareAppMessage: function () {},
 
-  onPublish() {
-    this.setData({
-      modalShow: true,
+  async onPublish() {
+    wx.getSetting({
+      complete: res => {
+        if (res.authSetting['scope.userInfo']) {
+          wx.getUserInfo({
+            complete: res => {
+              this.onLoginSuccess({
+                detail: res.userInfo,
+              })
+            },
+          })
+        } else {
+          this.setData({
+            modalShow: true,
+          })
+        }
+      },
+    })
+  },
+  onLoginSuccess(event) {
+    console.log('success')
+    const {
+      detail: { nickName, avatarUrl },
+    } = event
+    wx.navigateTo({
+      url: `../blog-edit/blog-edit?nickName=${nickName}&avatarurl=${avatarUrl}`,
+    })
+  },
+  onLoginFail() {
+    wx.showModal({
+      title: '授权失败',
     })
   },
 })

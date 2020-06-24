@@ -7,11 +7,7 @@
 			<x-search iconfont="iconfont" icon-search="icon-search"></x-search>
 		</view>
 	</view>
-  <x-bottom-modal modalShow="{{modalShow}}">
-    <view>
-      <view>
-      
-      </view>
-    </view>
-  </x-bottom-modal>
+	<x-login modalShow="{{modalShow}}" bind:loginSuccess="onLoginSuccess" bind:loginFail="onLoginFail">
+
+	</x-login>
 </view>
