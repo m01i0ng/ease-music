@@ -45,6 +45,14 @@ Page({
     this._loadBlogList()
   },
 
+  onShareAppMessage: function (event) {
+    const { blogId, blog } = event.target.dataset
+    return {
+      title: blog.content,
+      path: `/pages/blog-comment/blog-comment?blogId=${blogId}`,
+    }
+  },
+
   async _loadBlogList(start = 0) {
     wx.showLoading({
       title: '加载中...',

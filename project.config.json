@@ -10,6 +10,7 @@
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
@@ -22,8 +23,7 @@
 			"outputPath": ""
 		},
 		"useCompilerModule": false,
-		"userConfirmedUseCompilerModuleSwitch": false,
-		"nodeModules": true
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"appid": "wx4d85d61da2e9b528",
 	"projectname": "ease-music",
