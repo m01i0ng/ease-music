@@ -4,10 +4,18 @@
 			<i class="iconfont icon-publish"></i>
 		</view>
 		<view class="search-container">
-			<x-search iconfont="iconfont" icon-search="icon-search"></x-search>
+			<x-search iconfont="iconfont" icon-search="icon-search" bind:search="onSearch"></x-search>
 		</view>
 	</view>
-	<x-login modalShow="{{modalShow}}" bind:loginSuccess="onLoginSuccess" bind:loginFail="onLoginFail">
 
+	<view class="blog-list">
+		<block wx:for="{{blogList}}" wx:key="_id">
+			<view class="blog-panel">
+				<x-blog-card blog="{{item}}" bindtap="goComment" data-blogId="{{item._id}}"></x-blog-card>
+			</view>
+		</block>
+	</view>
+
+	<x-login modalShow="{{modalShow}}" bind:loginSuccess="onLoginSuccess" bind:loginFail="onLoginFail">
 	</x-login>
 </view>
