@@ -33,10 +33,17 @@ Page({
     this._loadBlogList(this.data.blogList.length)
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {},
+  onHide() {
+    keyword = ''
+  },
+
+  onShow() {
+    keyword = ''
+    this.setData({
+      blogList: [],
+    })
+    this._loadBlogList()
+  },
 
   async _loadBlogList(start = 0) {
     wx.showLoading({
