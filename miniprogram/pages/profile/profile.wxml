@@ -16,7 +16,7 @@
 	<view class="nav-item">
 		<navigator class="content" hover-class="none" url="/pages/profile-bloghistory/profile-bloghistory">
 			<i class="iconfont icon-collect"></i>
-			<text class="text">我的发现</text>
+			<text class="text">我的瞬间</text>
 			<i class="iconfont icon-right"></i>
 		</navigator>
 	</view>

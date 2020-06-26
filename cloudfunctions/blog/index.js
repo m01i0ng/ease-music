@@ -10,6 +10,7 @@ const commentCollection = db.collection('comment')
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
   const app = new TcbRouter({ event })
 
   app.router('list', async (ctx, next) => {
@@ -81,6 +82,28 @@ exports.main = async (event, context) => {
           comment,
         }
       }
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
+
+    next()
+  })
+
+  app.router('my', async (ctx, next) => {
+    const { OPENID } = cloud.getWXContext()
+    const { start, count } = event
+    try {
+      const res = await blogCollection
+        .where({
+          _openid: OPENID,
+        })
+        .skip(start)
+        .limit(count)
+        .orderBy('createTime', 'desc')
+        .get()
+
+      ctx.body = res.data
     } catch (err) {
       console.error(err)
       throw err

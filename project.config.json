@@ -94,6 +94,12 @@
 					"pathName": "pages/profile/profile",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/profile-bloghistory/profile-bloghistory",
+					"pathName": "pages/profile-bloghistory/profile-bloghistory",
+					"scene": null
 				}
 			]
 		}
