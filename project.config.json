@@ -99,6 +99,13 @@
 					"id": -1,
 					"name": "pages/profile-bloghistory/profile-bloghistory",
 					"pathName": "pages/profile-bloghistory/profile-bloghistory",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/blog/blog",
+					"pathName": "pages/blog/blog",
 					"scene": null
 				}
 			]
