@@ -87,6 +87,13 @@
 					"pathName": "pages/blog-edit/blog-edit",
 					"query": "nickName=马良&avatarurl=https://wx.qlogo.cn/mmopen/vi_32/ajNVdqHZLLCTntFAQ…XByCpB5HGXmGa70ickeWI3KwFEZSnc4mnk5NjUurvDD7w/132",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/profile/profile",
+					"pathName": "pages/profile/profile",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

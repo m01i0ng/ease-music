@@ -76,6 +76,8 @@ Page({
       backgroundAudioManager.coverImgUrl = music.al.picUrl
       backgroundAudioManager.singer = music.ar[0].name
       backgroundAudioManager.epname = music.al.name
+
+      this.savePlayHistory()
     }
 
     this.setData({
@@ -139,5 +141,16 @@ Page({
     this.setData({
       isPlaying: false,
     })
+  },
+  savePlayHistory() {
+    const music = musiclist[playingIndex]
+    const openid = app.globalData.openid
+    const history = wx.getStorageSync(openid)
+
+    const exist = history.some(h => h.id === music.id)
+    if (!exist) {
+      history.unshift(music)
+      wx.setStorageSync(openid, history)
+    }
   },
 })

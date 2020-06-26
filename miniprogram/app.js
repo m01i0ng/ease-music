@@ -14,8 +14,11 @@ App({
       })
     }
 
+    this.getOpenid()
+
     this.globalData = {
       playingMusicId: -1,
+      openid: '',
     }
   },
   setPlayingMusicId(musicId) {
@@ -23,5 +26,21 @@ App({
   },
   getPlayingMusicId() {
     return this.globalData.playingMusicId
+  },
+  async getOpenid() {
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'login',
+      })
+
+      const { openid } = res.result
+      this.globalData.openid = openid
+
+      if (!wx.getStorageSync(openid)) {
+        wx.setStorageSync(openid, [])
+      }
+    } catch (err) {
+      console.error(err)
+    }
   },
 })
